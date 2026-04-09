@@ -29,3 +29,7 @@ APIClient
 
 # Psycopg2
 - Most popular PostgresSQL adaptor for Python
+
+# Django ORM
+- Abstraction layer for data
+  - Django handles database structure and changes
