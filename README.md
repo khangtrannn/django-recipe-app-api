@@ -4,6 +4,9 @@ docker-compose run --rm app sh -c "flake8"
 # Github Actions
 
 # Docker command
+docker-compose down
+docker-compose up
+docker-compose build
 docker-compose run --rm app sh -c "django-admin startproject app ."
 
 # Docker Compose
@@ -22,3 +25,6 @@ unittest.mock
   - patch - Overrides code for tests
 
 APIClient
+
+# Psycopg2
+- Most popular PostgresSQL adaptor for Python
