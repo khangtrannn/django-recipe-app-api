@@ -1,5 +1,5 @@
 # flake8
-docker-compose run --rm app sh -c "flake8" 
+docker-compose run --rm app sh -c "flake8"
 
 # Github Actions
 
@@ -8,6 +8,8 @@ docker-compose down
 docker-compose up
 docker-compose build
 docker-compose run --rm app sh -c "django-admin startproject app ."
+docker volume ls
+docker volume rm django-recipe-app-api_dev-db-data
 
 # Docker Compose
 - Network connectivity: depend_on
