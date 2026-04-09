@@ -23,6 +23,7 @@ unittest
 unittest.mock
   - MagicMock / Mock - Replace real objects
   - patch - Overrides code for tests
+    - patch order is inside out
 
 APIClient
 
