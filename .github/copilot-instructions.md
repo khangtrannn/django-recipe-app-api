@@ -5,7 +5,6 @@ This repository follows the "Build a Backend REST API with Python & Django" cour
 ## Project Context
 
 - Use Django 3.2-compatible code and the dependencies already listed in `requirements.txt`.
-- Prefer incremental changes that match the current learning step instead of jumping ahead to later architecture.
 - Keep suggestions aligned with what already exists in the repo: Django app structure, custom management commands, model tests, and simple helper methods.
 
 ## Style And Conventions
