@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from core.models import Recipe, Tag
+
 
 class TagSerializer(serializers.ModelSerializer):
     """Serializer for tag objects"""
@@ -8,6 +10,7 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('id', 'name')
         read_only_fields = ('id',)
+
 
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for recipe objects"""
@@ -30,7 +33,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         """Handle getting or creating tags as needed"""
         auth_user = self.context['request'].user
         for tag in tags:
-            tag_obj, created = Tag.objects.get_or_create(user=auth_user, **tag)
+            tag_obj, _ = Tag.objects.get_or_create(user=auth_user, **tag)
             recipe.tags.add(tag_obj)
 
     def create(self, validated_data):
@@ -50,6 +53,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
 
 class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail view"""

@@ -1,6 +1,6 @@
-from decimal import Decimal
-import tempfile
 import os
+import tempfile
+from decimal import Decimal
 
 from PIL import Image
 
@@ -17,12 +17,15 @@ from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
 
 RECIPES_URL = reverse('recipe:recipe-list')
 
+
 def detail_url(recipe_id):
     """Return recipe detail URL"""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
+
 def image_upload_url(recipe_id):
     return reverse('recipe:recipe-upload-image', args=[recipe_id])
+
 
 def create_recipe(user, **params):
     defaults = {
@@ -36,8 +39,10 @@ def create_recipe(user, **params):
     recipe = Recipe.objects.create(user=user, **defaults)
     return recipe
 
+
 def create_user(**params):
     return get_user_model().objects.create_user(**params)
+
 
 class PublicRecipeApiTests(TestCase):
     """Test unauthenticated recipe API access"""
@@ -51,12 +56,16 @@ class PublicRecipeApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
 class PrivateRecipeApiTests(TestCase):
     """Test authenticated recipe API access"""
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email='testuser@example.com', password='password123')
+        self.user = create_user(
+            email='testuser@example.com',
+            password='password123',
+        )
         self.client.force_authenticate(user=self.user)
 
     def test_retrieve_recipes(self):
@@ -73,7 +82,10 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipes_limited_to_user(self):
         """Test that only recipes for authenticated user are returned"""
-        other_user = create_user(email='otheruser@example.com', password='password123')
+        other_user = create_user(
+            email='otheruser@example.com',
+            password='password123',
+        )
         create_recipe(user=self.user)
         create_recipe(user=other_user)
 
@@ -157,7 +169,10 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_update_user_returns_error(self):
         """Test changing the recipe user results in an error"""
-        new_user = create_user(email='newuser@example.com', password='password123')
+        new_user = create_user(
+            email='newuser@example.com',
+            password='password123',
+        )
         recipe = create_recipe(user=self.user)
 
         payload = {'user': new_user.id}
@@ -179,7 +194,10 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_delete_other_users_recipe_error(self):
         """Test trying to delete another users recipe gives error"""
-        new_user = create_user(email='newuser@example.com', password='password123')
+        new_user = create_user(
+            email='newuser@example.com',
+            password='password123',
+        )
         recipe = create_recipe(user=new_user)
 
         url = detail_url(recipe.id)
@@ -295,7 +313,7 @@ class PrivateRecipeApiTests(TestCase):
 
         res = self.client.get(
             RECIPES_URL,
-            {'tags': f'{tag1.id},{tag2.id}'}
+            {'tags': f'{tag1.id},{tag2.id}'},
         )
 
         serializer1 = RecipeSerializer(recipe1)
@@ -313,7 +331,7 @@ class ImageUploadTests(TestCase):
         self.client = APIClient()
         self.user = create_user(
             email='user@example.com',
-            password='testpass123'
+            password='testpass123',
         )
         self.client.force_authenticate(self.user)
         self.recipe = create_recipe(user=self.user)

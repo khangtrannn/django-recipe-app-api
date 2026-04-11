@@ -1,18 +1,12 @@
-from drf_spectacular.utils import (
-    extend_schema_view,
-    extend_schema,
-    OpenApiParameter,
-    OpenApiTypes,
-)
-
 from rest_framework import mixins, viewsets
+from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from core.models import Recipe, Tag
 from recipe import serializers
+
 
 class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.RecipeDetailSerializer
@@ -31,7 +25,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             tag_ids = self._params_to_ints(tags)
             queryset = queryset.filter(tags__id__in=tag_ids)
 
-        return queryset.filter(user=self.request.user).order_by('-id').distinct()
+        return queryset.filter(user=self.request.user).order_by(
+            '-id',
+        ).distinct()
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -56,7 +52,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=400)
 
 
-class TagViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class TagViewSet(
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
     authentication_classes = [TokenAuthentication]

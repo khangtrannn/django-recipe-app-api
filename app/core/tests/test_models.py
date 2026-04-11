@@ -7,8 +7,10 @@ from django.contrib.auth import get_user_model
 from core import models
 from core.models import Recipe, Tag
 
+
 def create_user(email='test@example.com', password='testpass123'):
     return get_user_model().objects.create_user(email=email, password=password)
+
 
 class ModelTests(TestCase):
     def test_create_user_with_email_successful(self):
@@ -28,8 +30,9 @@ class ModelTests(TestCase):
             ('test1@EXAMPLE.com', 'test1@example.com'),
             ('Test2@Example.COM', 'Test2@example.com'),
             ('TEST3@EXAMPLE.COM', 'TEST3@example.com'),
-            ('test4@example.COM', 'test4@example.com')
+            ('test4@example.COM', 'test4@example.com'),
         ]
+
         for email, expected in sample_emails:
             user = get_user_model().objects.create_user(
                 email=email,
